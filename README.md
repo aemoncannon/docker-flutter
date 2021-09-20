@@ -2,11 +2,26 @@
 
 With this docker image you don't need to install the Flutter and Android SDK on your developer machine. Everything is ready to use inclusive an emulator device (Pixel with Android 9). With a shell alias you won't recognize a difference between the image and a local installation. If you are using VSCode you can also use this image as your devcontainer.
 
-## Supported tags
+## Setup for local flutter development
 
-- [`latest`](https://github.com/matsp/docker-flutter/blob/master/stable/Dockerfile)
-- [`beta`](https://github.com/matsp/docker-flutter/tree/master/beta)
-- [`dev`](https://github.com/matsp/docker-flutter/tree/master/dev)
+1. Clone the repo and build the docker image. Note, it's necessary to build it locally so that the correct user and group are baked into your image. Otherwise, juggling write permissions between container and host is a pain.
+```
+git clone https://github.com/aemoncannon/docker-flutter.git
+cd docker-flutter
+docker build --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg USERNAME=aemon -f stable/Dockerfile . -t aemoncannon-docker-flutter
+```
+1. Add the following line to your ~/.bashrc file.
+```
+alias docker_flutter='docker run --rm -e UID=$(id -u) -e GID=$(id -g) --workdir /project -v "$PWD":/project aemoncannon-docker-flutter:latest'
+```
+1.Refresh from bashrc
+```
+source ~/.bashrc
+```
+1.Build the APK
+```
+docker_flutter build apk
+```
 
 ## Entrypoints
 

@@ -1,12 +1,13 @@
 FROM ubuntu:20.04
 
-ENV UID=1000
-ENV GID=1000
-ENV USER="developer"
+ARG GID
+ARG UID
+ARG USERNAME
+ENV USER="$USERNAME"
 ENV JAVA_VERSION="8"
 ENV ANDROID_TOOLS_URL="https://dl.google.com/android/repository/commandlinetools-linux-6858069_latest.zip"
-ENV ANDROID_VERSION="29"
-ENV ANDROID_BUILD_TOOLS_VERSION="29.0.3"
+ENV ANDROID_VERSION="28"
+ENV ANDROID_BUILD_TOOLS_VERSION="28.0.3"
 ENV ANDROID_ARCHITECTURE="x86_64"
 ENV ANDROID_SDK_ROOT="/home/$USER/android"
 ENV FLUTTER_CHANNEL="stable"
@@ -60,8 +61,3 @@ RUN curl -o flutter.tar.xz $FLUTTER_URL \
   && flutter doctor \
   && flutter emulators --create \
   && flutter update-packages
-
-COPY entrypoint.sh /usr/local/bin/
-COPY chown.sh /usr/local/bin/
-COPY flutter-android-emulator.sh /usr/local/bin/flutter-android-emulator
-ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
